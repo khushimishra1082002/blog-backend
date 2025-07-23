@@ -1,0 +1,59 @@
+Blog project
+
+28/03/2025
+setup - done
+Register - done
+Login - done
+Role-Based Access Control (RBAC) - done
+Posts crud - done
+
+29/03/2025
+user crud - done 
+comment system - done 
+
+31/03/2025 
+ like system for post - done 
+ Like & Dislike System for Posts - done
+ Like & Dislike System for Comments - done
+ Image Upload for Posts & User Profiles - done 
+
+
+ //Frontend Portion 1/04/2025
+
+ Src  
+ 
+ -components 
+
+ -pages
+
+ -hooks
+
+ -utills
+
+
+
+
+
+
+
+
+//Bakend advanced 
+   Pagination & Sorting for Blog Posts
+   Implement pagination for post listing.
+   Sort posts by date, popularity (likes), or category.
+   Search & Filtering System
+   Search blog posts by title, content, or author.
+   Filter posts by category or date range.
+   Search & Filtering System
+   Search blog posts by title, content, or author.
+   Filter posts by category or date range.
+   Admin Panel & Dashboard
+   Admin Dashboard
+   Show total posts, users, and comments.
+   Display user activity logs.
+   Comment Moderation System
+   Admins & Editors can see all comments.
+   Approve or reject flagged/spam comments.
+   Notification System
+   Notify users when their post is liked or commented on.
+   Email notifications for important updates.

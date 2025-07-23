@@ -1,0 +1,26 @@
+Register Url
+http://localhost:5000/api/auth/register
+
+Login Url
+http://localhost:5000/api/auth/login
+
+Post 
+Create - http://localhost:5000/api/blog-posts/createPost
+Read - http://localhost:5000//api/blog-posts/getPost
+Update - http://localhost:5000/api/blog-posts/updatePost/:id
+Delete - http://localhost:5000/api/blog-posts/deletePost/:id
+
+Single post - http://localhost:5000/api/blog-posts/singlePost/:id
+
+
+post structure 
+title- 
+content-
+author-
+category-
+tags-
+image-
+likes-
+comments-
+published-
+

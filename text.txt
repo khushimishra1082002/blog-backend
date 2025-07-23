@@ -1,0 +1,10 @@
+npm install express mongoose cors dotenv
+npm install nodemon 
+
+khushimishra1082002 Username
+1234 password
+
+
+https://edublogs.org/
+
+node index.js
