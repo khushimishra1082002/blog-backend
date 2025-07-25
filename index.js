@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const path = require("path")
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const blogPostsRoute = require("./routes/blogPostsRoutes");
@@ -17,6 +18,9 @@ const cors = require("cors");
 //Middleware
 app.use(express.json());
 app.use(cors());
+app.use("/api/uploads", express.static(path.join(__dirname, "uploads")));
+
+
 
 //Connect to the database
 connectDB()
@@ -33,7 +37,9 @@ app.use("/api/dislikes", disLikeRoutes);
 app.use("/api/category", categoryRoutes);
 app.use("/api/search", searchRoutes);
 app.use("/api/subscribe",subsribeRoutes)
-app.use("/uploads", express.static("uploads"));
+
+
+// app.use("/uploads", express.static("uploads"));
 
 app.get("/", (req, res) => {
   res.send("Welcome to the Blog API!");
