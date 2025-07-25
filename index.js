@@ -10,6 +10,7 @@ const disLikeRoutes = require("./routes/dislikeRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
 const searchRoutes = require("./routes/searchRoutes");
 const subsribeRoutes = require("./routes/subscribeRoutes")
+require("dotenv").config();
 
 const cors = require("cors");
 
@@ -38,7 +39,5 @@ app.get("/", (req, res) => {
   res.send("Welcome to the Blog API!");
 });
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+module.exports = app;
+
