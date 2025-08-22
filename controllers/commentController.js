@@ -33,6 +33,8 @@ const getCommentByPost = async (req, res) => {
       "user",
       "name image"
     );
+    console.log("comment",comment);
+    
     if (!comment) {
       return res.status(404).json({ message: "Comment not found" });
     }
