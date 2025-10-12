@@ -7,4 +7,5 @@ khushimishra1082002 Username
 
 https://edublogs.org/
 
-node index.js
+Backend command vercel - node index.js
+localhost - node server.js
