@@ -10,26 +10,26 @@ const getMyProfile = async (req, res) => {
   }
 };
 
-const updateMyProfile = async (req, res) => {
-  try {
-    const { name, email, password } = req.body;
-    const image = req.file ? req.file.path : undefined;
+// const updateMyProfile = async (req, res) => {
+//   try {
+//     const { name, email, password } = req.body;
+//     const image = req.file ? req.file.path : undefined;
 
-    const updateData = { name, email };
-    if (image) updateData.image = image;
+//     const updateData = { name, email };
+//     if (image) updateData.image = image;
 
-    if (password) {
-      updateData.password = await bcrypt.hash(password, 10);
-    }
+//     if (password) {
+//       updateData.password = await bcrypt.hash(password, 10);
+//     }
 
-    const updatedUser = await User.findByIdAndUpdate(req.user._id, updateData, {
-      new: true,
-    }).select("-password");
+//     const updatedUser = await User.findByIdAndUpdate(req.user._id, updateData, {
+//       new: true,
+//     }).select("-password");
 
-    res.status(200).json(updatedUser);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
+//     res.status(200).json(updatedUser);
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// };
 
-module.exports = { getMyProfile, updateMyProfile };
+module.exports = { getMyProfile };
