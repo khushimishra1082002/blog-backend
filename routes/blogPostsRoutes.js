@@ -4,7 +4,7 @@ const { createPost,getPost,updatePost,deletePost,singlePost,popularPost,featured
     ,topPosts,recommendedPost,trendingPost,recentPost,similorPost
  } = require("../controllers/blogPostsController");
 const {authorize , authenticate} = require("../middlewares/authMiddleware")
-const {upload} = require("../middlewares/uploadMiddleware");
+const upload = require("../middlewares/upload");
 
 router.get("/getPost",getPost)
 router.get("/singlePost/:id",singlePost);

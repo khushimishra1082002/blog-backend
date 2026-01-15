@@ -1,36 +1,17 @@
 const Post = require("../models/Posts");
 const mongoose = require("mongoose");
 
-// Get all post
-// const getPost = async (req, res) => {
-//   try {
-//     const allPosts = await Post.find()
-//       .populate("author", "name email image")
-//       .populate("category", "name")
-//       .populate({
-//         path: "comments",
-//         populate: { path: "author", select: "name email" },
-//       })
-//       .sort({ createdAt: -1 });
-
-//     res.status(200).json(allPosts);
-//   } catch (error) {
-//     res.status(500).json({ message: error.message });
-//   }
-// };
-
-
 const getPost = async (req, res) => {
   try {
     const allPosts = await Post.find()
-      .populate("author", "name email image") // post author
+      .populate("author", "name email image")
       .populate("category", "name")
       .populate({
         path: "comments",
         populate: [
-          { path: "user", select: "name image" },           // comment author
-          { path: "likesComment", select: "name image" },   // users who liked
-          { path: "dislikescomment", select: "name image" } // users who disliked
+          { path: "user", select: "name image" },
+          { path: "likesComment", select: "name image" },
+          { path: "dislikescomment", select: "name image" },
         ],
       })
       .sort({ createdAt: -1 });
@@ -40,7 +21,6 @@ const getPost = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
 
 // Get a single post
 const singlePost = async (req, res) => {
@@ -53,7 +33,7 @@ const singlePost = async (req, res) => {
         populate: [
           { path: "user", select: "name image" },
           { path: "likesComment", select: "name image" },
-          { path: "dislikescomment", select: "name image" }
+          { path: "dislikescomment", select: "name image" },
         ],
       });
 
@@ -68,12 +48,12 @@ const singlePost = async (req, res) => {
   }
 };
 
-
 //create new post
 const createPost = async (req, res) => {
   try {
     const { title, content, category, tags } = req.body;
-    const image = req.file ? req.file.filename : "";
+    const image = req.file ? req.file.path : undefined;
+
     const newPost = await Post.create({
       title,
       content,
@@ -119,7 +99,6 @@ const updatePost = async (req, res) => {
   }
 };
 
-
 // delete post
 const deletePost = async (req, res) => {
   try {
@@ -137,12 +116,10 @@ const deletePost = async (req, res) => {
       .json({ message: "Post deleted successfully", post: deletedPost });
   } catch (error) {
     console.error("Error in deletePost:", error);
-    res
-      .status(500)
-      .json({
-        message: "An internal server error occurred",
-        error: error.message,
-      });
+    res.status(500).json({
+      message: "An internal server error occurred",
+      error: error.message,
+    });
   }
 };
 

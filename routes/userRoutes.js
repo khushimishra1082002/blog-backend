@@ -9,7 +9,7 @@ const {
   changePassword,
 } = require("../controllers/userControllers");
 const { authenticate, authorize } = require("../middlewares/authMiddleware");
-const { upload } = require("../middlewares/uploadMiddleware");
+const upload = require("../middlewares/upload");
 
 router.get("/getUsers", getUsers);
 router.get("/getSingleUser/:id", getSingleUser);
