@@ -6,6 +6,8 @@ const { createPost,getPost,updatePost,deletePost,singlePost,popularPost,featured
 const {authorize , authenticate} = require("../middlewares/authMiddleware")
 const upload = require("../middlewares/upload");
 
+
+
 router.get("/getPost",getPost)
 router.get("/singlePost/:id",singlePost);
 router.post("/createPost",upload.single("image"),authenticate,authorize([ "user","editor", "admin"]),createPost);
