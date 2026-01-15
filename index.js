@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const path = require("path")
+const path = require("path");
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const blogPostsRoute = require("./routes/blogPostsRoutes");
@@ -10,7 +10,8 @@ const likesRoutes = require("./routes/likesRoutes");
 const disLikeRoutes = require("./routes/dislikeRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
 const searchRoutes = require("./routes/searchRoutes");
-const subsribeRoutes = require("./routes/subscribeRoutes")
+const subsribeRoutes = require("./routes/subscribeRoutes");
+const profileRoutes = require("./routes/profileRoutes");
 require("dotenv").config();
 
 const cors = require("cors");
@@ -19,8 +20,6 @@ const cors = require("cors");
 app.use(express.json());
 app.use(cors());
 app.use("/api/uploads", express.static(path.join(__dirname, "uploads")));
-
-
 
 //Connect to the database
 connectDB()
@@ -36,8 +35,8 @@ app.use("/api/likes", likesRoutes);
 app.use("/api/dislikes", disLikeRoutes);
 app.use("/api/category", categoryRoutes);
 app.use("/api/search", searchRoutes);
-app.use("/api/subscribe",subsribeRoutes)
-
+app.use("/api/subscribe", subsribeRoutes);
+app.use("/api/profile", profileRoutes);
 
 // app.use("/uploads", express.static("uploads"));
 
@@ -46,4 +45,3 @@ app.get("/", (req, res) => {
 });
 
 module.exports = app;
-
