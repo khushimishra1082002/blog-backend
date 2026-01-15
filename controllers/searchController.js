@@ -2,9 +2,38 @@ const Post = require("../models/Posts");
 const User = require("../models/User");
 const category = require("../models/Category");
 
+// const searchPost = async (req, res) => {
+//   const query = req.query.q;
+//   try {
+//     const posts = await Post.find({
+//       $or: [
+//         { title: { $regex: query, $options: "i" } },
+//         { content: { $regex: query, $options: "i" } },
+//       ],
+//     }).populate("author", "name image");
+
+//     res.status(200).json(posts);
+//   } catch (error) {
+//     console.error("Search error:", error);
+//     res.status(500).json({ error: "Server error while searching posts" });
+//   }
+// };
+
+
 const searchPost = async (req, res) => {
-  const query = req.query.q;
   try {
+    const query = req.query.q;
+
+    // ✅ EMPTY SEARCH → ALL POSTS
+    if (!query || query.trim() === "") {
+      const posts = await Post.find()
+        .populate("author", "name image")
+        .sort({ createdAt: -1 });
+
+      return res.status(200).json(posts);
+    }
+
+    // ✅ SEARCH QUERY → FILTERED POSTS
     const posts = await Post.find({
       $or: [
         { title: { $regex: query, $options: "i" } },
@@ -12,12 +41,13 @@ const searchPost = async (req, res) => {
       ],
     }).populate("author", "name image");
 
-    res.status(200).json(posts);
+    return res.status(200).json(posts);
   } catch (error) {
     console.error("Search error:", error);
-    res.status(500).json({ error: "Server error while searching posts" });
+    return res.status(500).json({ error: "Server error while searching posts" });
   }
 };
+
 
 const searchUser = async (req, res) => {
   const query = req.query.q;

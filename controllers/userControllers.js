@@ -46,20 +46,132 @@ const createUser = async (req, res) => {
   }
 };
 
+// const updateUser = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const updatedData = req.body;
+//     console.log("updatedData", updatedData);
+//     const user = await User.findByIdAndUpdate(id, updatedData, { new: true });
+//     if (!user) {
+//       return res.status(404).json({ message: "User not found" });
+//     }
+//     res.status(200).json({ message: "User updated successfully", user });
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// };
+
+
+// const updateUser = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+
+//     const updatedData = {
+//       ...req.body,
+//     };
+
+//     console.log("fgdgd",updatedData);
+    
+
+//     // ✅ image agar aayi ho to add karo
+//     if (req.file) {
+//       updatedData.image = req.file.filename;
+//     }
+
+//     const user = await User.findByIdAndUpdate(id, updatedData, {
+//       new: true,
+//     });
+
+//     if (!user) {
+//       return res.status(404).json({ message: "User not found" });
+//     }
+
+//     res.status(200).json({
+//       message: "User updated successfully",
+//       user,
+//     });
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// };
+// const updateUser = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+
+//     const updatedData = { ...req.body }; // req.body fields string me
+
+//     // ✅ Agar image upload hui ho
+//     if (req.file) {
+//       updatedData.image = req.file.filename; // filename string
+//     }
+
+//     const user = await User.findByIdAndUpdate(id, updatedData, { new: true });
+
+//     if (!user) {
+//       return res.status(404).json({ message: "User not found" });
+//     }
+
+//     res.status(200).json({
+//       message: "User updated successfully",
+//       user,
+//     });
+//   } catch (error) {
+//     console.error("Edit user error:", error);
+//     res.status(500).json({ message: error.message, stack: error.stack });
+//   }
+// };
+
+
+// const updateUser = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+
+//     // req.body me sirf string fields rakho, image ko req.file se handle karo
+//     const { name, email, password, role } = req.body;
+//     const updatedData: any = { name, email, password, role };
+
+//     // Agar file upload hui ho
+//     if (req.file) {
+//       updatedData.image = req.file.filename; // ✅ string
+//     }
+
+//     const user = await User.findByIdAndUpdate(id, updatedData, { new: true });
+
+//     if (!user) return res.status(404).json({ message: "User not found" });
+
+//     res.status(200).json({ message: "User updated successfully", user });
+//   } catch (error: any) {
+//     console.error(error);
+//     res.status(500).json({ message: error.message });
+//   }
+// };
 const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const updatedData = req.body;
-    console.log("updatedData", updatedData);
-    const user = await User.findByIdAndUpdate(id, updatedData, { new: true });
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
+
+    const { name, email, password, role } = req.body;
+    const updatedData = { name, email, password, role }; // removed :any
+
+    // If file uploaded
+    if (req.file) {
+      updatedData.image = req.file.filename; // string
     }
+
+    const user = await User.findByIdAndUpdate(id, updatedData, { new: true });
+
+    console.log("uu", user);
+
+    if (!user) return res.status(404).json({ message: "User not found" });
+
     res.status(200).json({ message: "User updated successfully", user });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: error.message });
   }
 };
+
+
+
 
 const deleteUser = async (req, res) => {
   try {

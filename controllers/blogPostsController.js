@@ -2,14 +2,36 @@ const Post = require("../models/Posts");
 const mongoose = require("mongoose");
 
 // Get all post
+// const getPost = async (req, res) => {
+//   try {
+//     const allPosts = await Post.find()
+//       .populate("author", "name email image")
+//       .populate("category", "name")
+//       .populate({
+//         path: "comments",
+//         populate: { path: "author", select: "name email" },
+//       })
+//       .sort({ createdAt: -1 });
+
+//     res.status(200).json(allPosts);
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// };
+
+
 const getPost = async (req, res) => {
   try {
     const allPosts = await Post.find()
-      .populate("author", "name email image")
+      .populate("author", "name email image") // post author
       .populate("category", "name")
       .populate({
         path: "comments",
-        populate: { path: "author", select: "name email" },
+        populate: [
+          { path: "user", select: "name image" },           // comment author
+          { path: "likesComment", select: "name image" },   // users who liked
+          { path: "dislikescomment", select: "name image" } // users who disliked
+        ],
       })
       .sort({ createdAt: -1 });
 
@@ -19,26 +41,33 @@ const getPost = async (req, res) => {
   }
 };
 
+
 // Get a single post
 const singlePost = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id)
       .populate("author", "name email image")
+      .populate("category", "name")
       .populate({
         path: "comments",
-        populate: { path: "author", select: "name email" },
-      })
-      .populate("category", "name");
-    if (!post) {
-      return res.status(404).json({ message: "Post not found" });
-    }
-    post.views += 1;
+        populate: [
+          { path: "user", select: "name image" },
+          { path: "likesComment", select: "name image" },
+          { path: "dislikescomment", select: "name image" }
+        ],
+      });
+
+    if (!post) return res.status(404).json({ message: "Post not found" });
+
+    post.views = (post.views || 0) + 1;
     await post.save();
+
     res.status(200).json(post);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 //create new post
 const createPost = async (req, res) => {
