@@ -1,16 +1,17 @@
 const express = require("express");
 const router = express.Router();
 const {
-  getMyProfile,
+  getMyProfile,updateMyProfile
 } = require("../controllers/profileController");
 const { authenticate } = require("../middlewares/authMiddleware");
+const upload =  require("../middlewares/upload")
 
 router.get("/me", authenticate, getMyProfile);
-// router.put(
-//   "/updateProfile",
-//   authenticate,
-//   upload.single("image"),
-//   updateMyProfile
-// );
+router.put(
+  "/updateProfile",
+  authenticate,
+  upload.single("image"),
+  updateMyProfile
+);
 
 module.exports = router;

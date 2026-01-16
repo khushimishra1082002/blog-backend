@@ -11,7 +11,10 @@ const authenticate = (req, res, next) => {
     }
     // Verify Token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.authData = decoded;
+    console.log("decoded", decoded);
+
+    req.user = decoded;
+
     next();
   } catch (error) {
     return res.status(403).json({ message: "Forbidden - Invalid Token" });
