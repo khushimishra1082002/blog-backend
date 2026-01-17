@@ -24,18 +24,19 @@ const authenticate = (req, res, next) => {
 // Middleware to Authorize Users Based on Roles
 const authorize = (allowedRoles) => {
   return (req, res, next) => {
-    if (!req.authData) {
-      return res
-        .status(401)
-        .json({ message: "Unauthorized: No User Data Found" });
+    if (!req.user) {
+      return res.status(401).json({ message: "Unauthorized: No User Data Found" });
     }
-    if (!allowedRoles.includes(req.authData.role)) {
-      res.status(403).json({
-        message: "Unauthorized : Forbidden: Insufficient Permissions",
+
+    if (!allowedRoles.includes(req.user.role)) {
+      return res.status(403).json({
+        message: "Forbidden: Insufficient Permissions",
       });
     }
+
     next();
   };
 };
+
 
 module.exports = { authenticate, authorize };
