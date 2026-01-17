@@ -88,33 +88,75 @@ const deleteComment = async (req, res) => {
 // dislike comment
 
 
+// const likeComment = async (req, res) => {
+//   const { commentId } = req.params;
+//   const userId = req.authData.id;
+
+//   const comment = await Comment.findById(commentId);
+//   if (!comment) return res.status(404).json({ message: "Comment not found" });
+
+//   const hasLiked = comment.likesComment.includes(userId);
+//   const hasDisliked = comment.dislikescomment.includes(userId);
+
+//   if (hasLiked) {
+//     // 👉 UNLIKE
+//     comment.likesComment.pull(userId);
+//   } else {
+//     // 👉 LIKE
+//     comment.likesComment.push(userId);
+
+//     // remove dislike if exists
+//     if (hasDisliked) {
+//       comment.dislikescomment.pull(userId);
+//     }
+//   }
+
+//   await comment.save();
+//   res.status(200).json({
+//     message: "Reaction updated",
+//     comment,
+//   });
+// };
+
 const likeComment = async (req, res) => {
   const { commentId } = req.params;
-  const userId = req.authData.id;
+  const userId = req.user.id;
 
   const comment = await Comment.findById(commentId);
-  if (!comment) return res.status(404).json({ message: "Comment not found" });
+  if (!comment) {
+    return res.status(404).json({ message: "Comment not found" });
+  }
+
+  // ❌ prevent self-like
+  if (comment.user.toString() === userId) {
+    return res
+      .status(403)
+      .json({ message: "You cannot like your own comment" });
+  }
 
   const hasLiked = comment.likesComment.includes(userId);
   const hasDisliked = comment.dislikescomment.includes(userId);
 
   if (hasLiked) {
-    // 👉 UNLIKE
     comment.likesComment.pull(userId);
   } else {
-    // 👉 LIKE
     comment.likesComment.push(userId);
-
-    // remove dislike if exists
     if (hasDisliked) {
       comment.dislikescomment.pull(userId);
     }
   }
 
   await comment.save();
+
+  // ✅ POPULATE BEFORE SENDING RESPONSE
+  const populatedComment = await Comment.findById(comment._id)
+    .populate("user", "name image")
+    .populate("likesComment", "name image")
+    .populate("dislikescomment", "name image");
+
   res.status(200).json({
     message: "Reaction updated",
-    comment,
+    comment: populatedComment,
   });
 };
 
@@ -153,35 +195,79 @@ const likeComment = async (req, res) => {
 // };
 
 
+// const dislikeComment = async (req, res) => {
+//   const { commentId } = req.params;
+//   const userId = req.authData.id;
+
+//   const comment = await Comment.findById(commentId);
+//   if (!comment) return res.status(404).json({ message: "Comment not found" });
+
+//   const hasDisliked = comment.dislikescomment.includes(userId);
+//   const hasLiked = comment.likesComment.includes(userId);
+
+//   if (hasDisliked) {
+//     // 👉 UNDISLIKE
+//     comment.dislikescomment.pull(userId);
+//   } else {
+//     // 👉 DISLIKE
+//     comment.dislikescomment.push(userId);
+
+//     // remove like if exists
+//     if (hasLiked) {
+//       comment.likesComment.pull(userId);
+//     }
+//   }
+
+//   await comment.save();
+//   res.status(200).json({
+//     message: "Reaction updated",
+//     comment,
+//   });
+// };
+
 const dislikeComment = async (req, res) => {
   const { commentId } = req.params;
-  const userId = req.authData.id;
+  const userId = req.user.id;
 
   const comment = await Comment.findById(commentId);
-  if (!comment) return res.status(404).json({ message: "Comment not found" });
+  if (!comment) {
+    return res.status(404).json({ message: "Comment not found" });
+  }
+
+  // ❌ prevent self-dislike
+  if (comment.user.toString() === userId) {
+    return res
+      .status(403)
+      .json({ message: "You cannot dislike your own comment" });
+  }
 
   const hasDisliked = comment.dislikescomment.includes(userId);
   const hasLiked = comment.likesComment.includes(userId);
 
   if (hasDisliked) {
-    // 👉 UNDISLIKE
     comment.dislikescomment.pull(userId);
   } else {
-    // 👉 DISLIKE
     comment.dislikescomment.push(userId);
-
-    // remove like if exists
     if (hasLiked) {
       comment.likesComment.pull(userId);
     }
   }
 
   await comment.save();
+
+  // ✅ POPULATE BEFORE RESPONSE (IMPORTANT)
+  const populatedComment = await Comment.findById(comment._id)
+    .populate("user", "name image")
+    .populate("likesComment", "name image")
+    .populate("dislikescomment", "name image");
+
   res.status(200).json({
     message: "Reaction updated",
-    comment,
+    comment: populatedComment,
   });
 };
+
+
 
 
 module.exports = {
