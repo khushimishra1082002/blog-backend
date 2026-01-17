@@ -25,7 +25,9 @@ const authenticate = (req, res, next) => {
 const authorize = (allowedRoles) => {
   return (req, res, next) => {
     if (!req.user) {
-      return res.status(401).json({ message: "Unauthorized: No User Data Found" });
+      return res
+        .status(401)
+        .json({ message: "Unauthorized: No User Data Found" });
     }
 
     if (!allowedRoles.includes(req.user.role)) {
@@ -37,6 +39,5 @@ const authorize = (allowedRoles) => {
     next();
   };
 };
-
 
 module.exports = { authenticate, authorize };

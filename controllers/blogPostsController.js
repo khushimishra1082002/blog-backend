@@ -225,22 +225,7 @@ const recentPost = async (req, res) => {
   }
 };
 
-// Similor post
-// const similorPost = async (req, res) => {
-//   try {
-//     const post = await Post.findById(req.params.id).populate("author", "name email image")
-//     if (!post) {
-//       return res.status(404).json({ message: "Post not found" });
-//     }
-//     const similorPosts = await Post.find({
-//       _id: { $ne: post._id },
-//       category: post.category,
-//     }).limit(4);
-//     res.status(200).json(similorPosts);
-//   } catch (error) {
-//     res.status(500).json({ message: error.message });
-//   }
-// };
+//similor posts
 const similorPost = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);

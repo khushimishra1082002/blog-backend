@@ -14,7 +14,6 @@ const allCategory = async (req, res) => {
   }
 };
 
-
 // single category
 const singleCategory = async (req, res) => {
   try {
@@ -29,18 +28,18 @@ const singleCategory = async (req, res) => {
   }
 };
 
-
 // add new category
 const addCategory = async (req, res) => {
   try {
     const { name } = req.body;
-    const newCategory = await Category.create({name});
-    res.status(201).json({ message: "Category created successfully", newCategory });
+    const newCategory = await Category.create({ name });
+    res
+      .status(201)
+      .json({ message: "Category created successfully", newCategory });
   } catch (error) {
     res.status(500).json(error.message);
   }
 };
-
 
 // edit category
 const editCategory = async (req, res) => {
@@ -52,19 +51,16 @@ const editCategory = async (req, res) => {
       updateData,
       {
         new: true,
-      }
+      },
     );
-    res
-      .status(200)
-      .json({
-        message: "Category edit successfully",
-        category: updatedCategory,
-      });
+    res.status(200).json({
+      message: "Category edit successfully",
+      category: updatedCategory,
+    });
   } catch (error) {
     res.status(500).json(error.message);
   }
 };
-
 
 // delete category
 const deleteCategory = async (req, res) => {
@@ -79,17 +75,15 @@ const deleteCategory = async (req, res) => {
       return res.status(404).json({ message: "Category not found" });
     }
     res.status(200).json({
-    message: "Category deleted successfully",
-    post: deletedCategory,
+      message: "Category deleted successfully",
+      post: deletedCategory,
     });
   } catch (error) {
     console.error("Error in deleteCategory:", error);
-    res
-      .status(500)
-      .json({
-        message: "An internal server error occurred",
-        error: error.message,
-      });
+    res.status(500).json({
+      message: "An internal server error occurred",
+      error: error.message,
+    });
   }
 };
 

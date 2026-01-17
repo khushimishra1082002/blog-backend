@@ -25,7 +25,7 @@ const likePost = async (req, res) => {
     const updatedPost = await Post.findByIdAndUpdate(
       post,
       { $addToSet: { likes: author } },
-      { new: true }
+      { new: true },
     );
     res.status(201).json({
       message: "Post liked successfully",
@@ -65,7 +65,7 @@ const unlikePost = async (req, res) => {
     const updatedPost = await Post.findByIdAndUpdate(
       postId,
       { $pull: { likes: author } },
-      { new: true }
+      { new: true },
     );
     res.status(200).json({
       message: "Post unliked successfully",

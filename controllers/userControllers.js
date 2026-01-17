@@ -52,14 +52,12 @@ const updateUser = async (req, res) => {
     const { id } = req.params;
 
     const { name, email, password, role } = req.body;
-    const updatedData = { name, email, password, role }; // removed :any
+    const updatedData = { name, email, password, role };
 
     const image = req.file ? req.file.path : undefined;
 
-
-    // If file uploaded
     if (req.file) {
-      updatedData.image = image // string
+      updatedData.image = image;
     }
 
     const user = await User.findByIdAndUpdate(id, updatedData, { new: true });

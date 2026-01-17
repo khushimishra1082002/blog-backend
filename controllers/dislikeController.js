@@ -5,7 +5,9 @@ const disLikePost = async (req, res) => {
   try {
     const { post, author } = req.body;
     if (!post || !author) {
-      return res.status(400).json({ message: "Post Id or author id are required" });
+      return res
+        .status(400)
+        .json({ message: "Post Id or author id are required" });
     }
     const existingPost = await Post.findById(post);
     if (!existingPost) {
@@ -20,10 +22,10 @@ const disLikePost = async (req, res) => {
     const updatedPost = await Post.findByIdAndUpdate(
       post,
       { $addToSet: { dislikes: author } },
-      { new: true }
+      { new: true },
     );
     res.status(201).json({
-    message: "Post dislike successful",
+      message: "Post dislike successful",
       totalDislikes: updatedPost.dislikes.length,
     });
   } catch (error) {
@@ -56,7 +58,7 @@ const unDislikePost = async (req, res) => {
     const updatedPost = await Post.findByIdAndUpdate(
       postId,
       { $pull: { likes: author } },
-      { new: true }
+      { new: true },
     );
     res.status(200).json({
       message: "Post unliked successfully",
@@ -68,10 +70,7 @@ const unDislikePost = async (req, res) => {
   }
 };
 
-const getDisLikesPost = async (req, res) => {};
-
 module.exports = {
   disLikePost,
   unDislikePost,
-  getDisLikesPost,
 };

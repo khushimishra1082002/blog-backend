@@ -26,7 +26,6 @@ const addComment = async (req, res) => {
 };
 
 // get comment
-// get comments by post with likes and dislikes populated
 const getCommentByPost = async (req, res) => {
   try {
     const { postId } = req.params;
@@ -35,8 +34,6 @@ const getCommentByPost = async (req, res) => {
       .populate("user", "name image")
       .populate("likesComment", "name image")
       .populate("dislikescomment", "name image");
-
-    // Normalize missing fields
     comments = comments.map((c) => {
       const obj = c.toObject();
       obj.likesComment = obj.likesComment || []; // if undefined, set to []
@@ -68,56 +65,7 @@ const deleteComment = async (req, res) => {
   }
 };
 
-// const likeComment = async (req, res) => {
-//   const { commentId } = req.params;
-
-//   // ✅ req.authData.id use karo, req.user.id nahi
-//   const userId = req.authData.id;
-
-//   const comment = await Comment.findByIdAndUpdate(
-//     commentId,
-//     { $addToSet: { likesComment: userId } }, // add user if not already liked
-//     { new: true }
-//   )
-//     .populate("user", "name image")
-//     .populate("likesComment", "name image")
-//     .populate("dislikescomment", "name image");
-
-//   res.status(200).json({ comment });
-// };
-// dislike comment
-
-
-// const likeComment = async (req, res) => {
-//   const { commentId } = req.params;
-//   const userId = req.authData.id;
-
-//   const comment = await Comment.findById(commentId);
-//   if (!comment) return res.status(404).json({ message: "Comment not found" });
-
-//   const hasLiked = comment.likesComment.includes(userId);
-//   const hasDisliked = comment.dislikescomment.includes(userId);
-
-//   if (hasLiked) {
-//     // 👉 UNLIKE
-//     comment.likesComment.pull(userId);
-//   } else {
-//     // 👉 LIKE
-//     comment.likesComment.push(userId);
-
-//     // remove dislike if exists
-//     if (hasDisliked) {
-//       comment.dislikescomment.pull(userId);
-//     }
-//   }
-
-//   await comment.save();
-//   res.status(200).json({
-//     message: "Reaction updated",
-//     comment,
-//   });
-// };
-
+//like comment
 const likeComment = async (req, res) => {
   const { commentId } = req.params;
   const userId = req.user.id;
@@ -126,8 +74,6 @@ const likeComment = async (req, res) => {
   if (!comment) {
     return res.status(404).json({ message: "Comment not found" });
   }
-
-  // ❌ prevent self-like
   if (comment.user.toString() === userId) {
     return res
       .status(403)
@@ -147,8 +93,6 @@ const likeComment = async (req, res) => {
   }
 
   await comment.save();
-
-  // ✅ POPULATE BEFORE SENDING RESPONSE
   const populatedComment = await Comment.findById(comment._id)
     .populate("user", "name image")
     .populate("likesComment", "name image")
@@ -160,71 +104,7 @@ const likeComment = async (req, res) => {
   });
 };
 
-
-
-// const dislikeComment = async (req, res) => {
-//   try {
-//     const { commentId } = req.params;
-//     const userId = req.authData.id;
-
-//     const comment = await Comment.findById(commentId)
-//       .populate("user", "name image")
-//       .populate("likesComment", "name image")
-//       .populate("dislikescomment", "name image");
-//     if (!comment) return res.status(404).json({ message: "Comment not found" });
-
-//     if (comment.dislikescomment.includes(userId)) {
-//       return res
-//         .status(400)
-//         .json({ message: "You have already disliked this comment" });
-//     }
-
-//     // Remove from likes if exists
-//     comment.likesComment = comment.likesComment.filter(
-//       (id) => id.toString() !== userId
-//     );
-
-//     // Add to dislikes
-//     comment.dislikescomment.push(userId);
-
-//     await comment.save();
-//     res.status(200).json({ message: "Comment disliked successfully", comment });
-//   } catch (error) {
-//     res.status(500).json({ message: error.message });
-//   }
-// };
-
-
-// const dislikeComment = async (req, res) => {
-//   const { commentId } = req.params;
-//   const userId = req.authData.id;
-
-//   const comment = await Comment.findById(commentId);
-//   if (!comment) return res.status(404).json({ message: "Comment not found" });
-
-//   const hasDisliked = comment.dislikescomment.includes(userId);
-//   const hasLiked = comment.likesComment.includes(userId);
-
-//   if (hasDisliked) {
-//     // 👉 UNDISLIKE
-//     comment.dislikescomment.pull(userId);
-//   } else {
-//     // 👉 DISLIKE
-//     comment.dislikescomment.push(userId);
-
-//     // remove like if exists
-//     if (hasLiked) {
-//       comment.likesComment.pull(userId);
-//     }
-//   }
-
-//   await comment.save();
-//   res.status(200).json({
-//     message: "Reaction updated",
-//     comment,
-//   });
-// };
-
+//dislike comment
 const dislikeComment = async (req, res) => {
   const { commentId } = req.params;
   const userId = req.user.id;
@@ -267,14 +147,10 @@ const dislikeComment = async (req, res) => {
   });
 };
 
-
-
-
 module.exports = {
   addComment,
   getCommentByPost,
   deleteComment,
   likeComment,
-  // unlikeComment,
   dislikeComment,
 };

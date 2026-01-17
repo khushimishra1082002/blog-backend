@@ -6,7 +6,6 @@ const registerUser = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
     const image = req.file ? req.file.path : undefined;
-
     console.log(image);
     const user = await User.findOne({ email });
     if (user) {

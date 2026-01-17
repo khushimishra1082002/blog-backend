@@ -5,7 +5,6 @@ const {
   getCommentByPost,
   deleteComment,
   likeComment,
-  unlikeComment,
   dislikeComment,
 } = require("../controllers/commentController");
 const { authenticate, authorize } = require("../middlewares/authMiddleware");
