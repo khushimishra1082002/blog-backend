@@ -12,6 +12,7 @@ const categoryRoutes = require("./routes/categoryRoutes");
 const searchRoutes = require("./routes/searchRoutes");
 const subsribeRoutes = require("./routes/subscribeRoutes");
 const profileRoutes = require("./routes/profileRoutes");
+const adminRoutes = require("./routes/adminRoutes")
 require("dotenv").config();
 
 const cors = require("cors");
@@ -37,10 +38,11 @@ app.use("/api/category", categoryRoutes);
 app.use("/api/search", searchRoutes);
 app.use("/api/subscribe", subsribeRoutes);
 app.use("/api/profile", profileRoutes);
+app.use("/api/admin", adminRoutes)
 
 // app.use("/uploads", express.static("uploads"));
 
-app.get("/", (req, res) => {
+app.get("/", (req, res) => {                                                          
   res.send("Welcome to the Blog API!");
 });
 

@@ -76,10 +76,10 @@ const updatePost = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const updatedData = req.body;
+    const updatedData = { ...req.body };
 
     if (req.file) {
-      updatedData.image = req.file.filename;
+      updatedData.image = req.file.path; // ✅ SAME AS CREATE
     }
 
     const updatedPost = await Post.findByIdAndUpdate(id, updatedData, {
@@ -95,9 +95,11 @@ const updatePost = async (req, res) => {
       post: updatedPost,
     });
   } catch (error) {
+    console.error("Update error:", error);
     res.status(500).json({ message: error.message });
   }
 };
+
 
 // delete post
 const deletePost = async (req, res) => {
