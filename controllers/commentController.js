@@ -36,8 +36,8 @@ const getCommentByPost = async (req, res) => {
       .populate("dislikescomment", "name image");
     comments = comments.map((c) => {
       const obj = c.toObject();
-      obj.likesComment = obj.likesComment || []; // if undefined, set to []
-      obj.dislikescomment = obj.dislikescomment || []; // if undefined, set to []
+      obj.likesComment = obj.likesComment || [];
+      obj.dislikescomment = obj.dislikescomment || [];
       return obj;
     });
 
@@ -114,7 +114,6 @@ const dislikeComment = async (req, res) => {
     return res.status(404).json({ message: "Comment not found" });
   }
 
-  // ❌ prevent self-dislike
   if (comment.user.toString() === userId) {
     return res
       .status(403)
@@ -135,7 +134,6 @@ const dislikeComment = async (req, res) => {
 
   await comment.save();
 
-  // ✅ POPULATE BEFORE RESPONSE (IMPORTANT)
   const populatedComment = await Comment.findById(comment._id)
     .populate("user", "name image")
     .populate("likesComment", "name image")

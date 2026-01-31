@@ -6,7 +6,7 @@ const searchPost = async (req, res) => {
   try {
     const query = req.query.q;
 
-    // EMPTY SEARCH → ALL POSTS
+   
     if (!query || query.trim() === "") {
       const posts = await Post.find()
         .populate("author", "name image")
@@ -15,7 +15,7 @@ const searchPost = async (req, res) => {
       return res.status(200).json(posts);
     }
 
-    //  SEARCH QUERY → FILTERED POSTS
+   
     const posts = await Post.find({
       $or: [
         { title: { $regex: query, $options: "i" } },

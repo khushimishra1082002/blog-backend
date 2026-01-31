@@ -239,7 +239,7 @@ const similorPost = async (req, res) => {
       _id: { $ne: post._id },
       category: post.category,
     })
-      .populate("author", "name image") // ✅ FIX
+      .populate("author", "name image") 
       .limit(4);
 
     res.status(200).json(similorPosts);
