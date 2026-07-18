@@ -14,6 +14,11 @@ const subsribeRoutes = require("./routes/subscribeRoutes");
 const profileRoutes = require("./routes/profileRoutes");
 const adminRoutes = require("./routes/adminRoutes")
 require("dotenv").config();
+const dns = require(
+  "dns"
+)
+
+dns.setServers(["1.1.1.1", "8.8.8.8"])
 
 const cors = require("cors");
 
@@ -42,7 +47,7 @@ app.use("/api/admin", adminRoutes)
 
 // app.use("/uploads", express.static("uploads"));
 
-app.get("/", (req, res) => {                                                          
+app.get("/", (req, res) => {
   res.send("Welcome to the Blog API!");
 });
 
