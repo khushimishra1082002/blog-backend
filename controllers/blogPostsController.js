@@ -54,6 +54,11 @@ const createPost = async (req, res) => {
     const { title, content, category, tags } = req.body;
     const image = req.file ? req.file.path : undefined;
 
+    console.log("req.body:", req.body);
+    console.log("req.user:", req.user);
+    console.log("req.file:", req.file);
+
+
     const newPost = await Post.create({
       title,
       content,
@@ -61,15 +66,17 @@ const createPost = async (req, res) => {
       isFeatured: req.body.isFeatured,
       category: category,
       tags,
-      image,
+      image: image,
       published: true,
     });
     res.status(201).json({ message: "Post created successfully", newPost });
+
   } catch (error) {
     console.error("Error in createPost:", error);
     return res.status(500).json({ message: error.message });
   }
-};
+}
+
 
 // Update a post
 const updatePost = async (req, res) => {
@@ -239,7 +246,7 @@ const similorPost = async (req, res) => {
       _id: { $ne: post._id },
       category: post.category,
     })
-      .populate("author", "name image") 
+      .populate("author", "name image")
       .limit(4);
 
     res.status(200).json(similorPosts);

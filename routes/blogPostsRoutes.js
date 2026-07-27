@@ -21,9 +21,9 @@ router.get("/getPost", getPost);
 router.get("/singlePost/:id", singlePost);
 router.post(
   "/createPost",
-  upload.single("image"),
   authenticate,
   authorize(["user", "editor", "admin"]),
+   upload.single("image"),
   createPost,
 );
 router.put("/updatePost/:id", authenticate, upload.single("image"), updatePost);
