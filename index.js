@@ -24,7 +24,16 @@ const cors = require("cors");
 
 //Middleware
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3000",
+      "https://blog-frontend-eight-orpin.vercel.app/"
+    ],
+    credentials: true,
+  })
+);
+
 app.use("/api/uploads", express.static(path.join(__dirname, "uploads")));
 
 //Connect to the database
