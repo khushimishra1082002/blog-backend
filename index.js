@@ -28,7 +28,8 @@ app.use(
   cors({
     origin: [
       "http://localhost:3000",
-      "https://blog-frontend-eight-orpin-ten.vercel.app"
+      "https://blog-frontend-eight-orpin-ten.vercel.app",
+      "https://blog-frontend-eight-orpin.vercel.app"
     ],
     credentials: true,
   })
